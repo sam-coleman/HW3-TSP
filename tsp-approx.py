@@ -737,14 +737,32 @@ def testMSTApprox():
                     Tflag = True
             if ind == 7:
                 ans = 40030.173592
+                ans2 = 78992.875888
                 if (w < ans - tol) or (w > ans + tol):
-                    print('Test %d: Wrong TSP!' % ind)
+                    print('Test %d: Wrong TSP (when traversing the tree via DFS from left to right)!' % ind)
+                    flag_left = True
+                if (w < ans2 - tol) or (w > ans2 + tol):
+                    print('Test %d: Wrong TSP (when traversing the tree via DFS from right to left)!' % ind)
+                    flag_right = True
+                if flag_left and flag_right:
+                    print("[FAILED} Test %d: Wrong TSP considering both directions of DFS traversal" % ind)
                     Tflag = True
+                if (flag_left or flag_right) and not Tflag:
+                    print("Test %d still passed." % ind)
             if ind == 8:
                 ans = 79526.611536
+                ans2 = 78992.875888
                 if (w < ans - tol) or (w > ans + tol):
-                    print('Test %d: Wrong TSP!' % ind)
+                    print('Test %d: Wrong TSP (when traversing the tree via DFS from left to right)!' % ind)
+                    flag_left = True
+                if (w < ans2 - tol) or (w > ans2 + tol):
+                    print('Test %d: Wrong TSP (when traversing the tree via DFS from right to left)!' % ind)
+                    flag_right = True
+                if flag_left and flag_right:
+                    print("[FAILED} Test %d: Wrong TSP considering both directions of DFS traversal" % ind)
                     Tflag = True
+                if (flag_left or flag_right) and not Tflag:
+                    print("Test %d still passed." % ind)
         else:
             Tflag = True
         if not Mflag:
