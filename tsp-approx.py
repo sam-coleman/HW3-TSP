@@ -9,6 +9,7 @@ Please don't look at it unless you are absolutely stuck, even after hours!
 """
 
 # Import math.
+from itertools import permutations
 import math
 ################################################################################
 
@@ -72,7 +73,22 @@ The cities should be denoted by their rank (their numbering in adjList).
 """
 def tsp(adjList, start):
     ##### Your implementation goes here. #####
+    for v in adjList:
+        v.visited = False
+    stack = [start] # stack for DFS
+    tour = [] # cycle we return
 
+    while stack:
+        current_city = stack.pop()
+        current_city.visited = True
+        tour.append(current_city.rank)
+        # Add neighbors of current to stack
+        for n in current_city.mstN:
+            if not n.visited:
+                stack.append(n)
+        
+    # end at first city (so its a cycle)
+    tour.append(start.rank)
     return tour
 
 ################################################################################
@@ -409,9 +425,25 @@ class Map:
     """
     def getTSPApprox(self):
         if len(self.mst) > 0:
-            ### TODO ###
-            # Complete the TSP Approximation method here
             # Update the Map object with the TSP Approximate tour
+            #self.tour = tsp(self.adjList, self.start)
+            for v in self.adjList:
+                v.visited = False
+            stack = [self.start] # stack for DFS
+            tour = [] # cycle we return
+
+            while stack:
+                current_city = stack.pop()
+                current_city.visited = True
+                tour.append(current_city.rank)
+                # Add neighbors of current to stack
+                for n in current_city.mstN:
+                    if not n.visited:
+                        stack.append(n)
+                
+            # end at first city (so its a cycle)
+            tour.append(self.start.rank)
+            self.tour = tour
         else:
             raise Exception('No MST set!')
         return
@@ -423,8 +455,25 @@ class Map:
         ### TODO ###
         # Complete a brute-force TSP solution!
         # Replace the following two lines with an actual implementation.
-        self.tourOpt = getMap(self.mapNum)[3]
-        return None
+        min_cost = math.inf
+        best_path = []
+        for p in permutations(self.adjList):
+            p = list(p)
+            if p[0] == self.start:
+                p.append(self.start) # complete cycle
+                cost = 0
+                for node in p:
+                    cost += node.cost
+                
+                if cost < min_cost:
+                    min_cost = cost
+                    best_path = p
+        
+        tour = []
+        for n in best_path:
+            tour.append(n.rank)
+        self.tourOpt = tour
+        return
 
     """
     clearMap: this function will reset the MST and tour for the map, along with
