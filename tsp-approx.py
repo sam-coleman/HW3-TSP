@@ -787,6 +787,8 @@ def testMSTApprox():
             if ind == 7:
                 ans = 40030.173592
                 ans2 = 78992.875888
+                # fix the flag issue
+                flag_left = False
                 if (w < ans - tol) or (w > ans + tol):
                     print('Test %d: Wrong TSP (when traversing the tree via DFS from left to right)!' % ind)
                     flag_left = True
